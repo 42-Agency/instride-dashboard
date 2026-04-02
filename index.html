@@ -430,6 +430,32 @@
       </div>
 
       <div class="chart-card full-width">
+        <h3 class="chart-title">Factor Importance When Evaluating Partners</h3>
+        <p style="color: #6b6b6b; font-size: 0.875rem; margin-bottom: 16px;">Average ranking (1 = most important)</p>
+        <div id="rankingChart" class="bar-chart-horizontal"></div>
+      </div>
+
+      <div class="chart-card">
+        <h3 class="chart-title">Who Leads Vendor Selection?</h3>
+        <div class="chart-container">
+          <canvas id="decisionChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <h3 class="chart-title">Evaluation Timeline</h3>
+        <div class="chart-container">
+          <canvas id="timelineChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card full-width">
+        <h3 class="chart-title">Current Program Satisfaction</h3>
+        <p style="color: #6b6b6b; font-size: 0.875rem; margin-bottom: 16px;">% who agree or strongly agree</p>
+        <div id="satisfactionChart" class="bar-chart-horizontal"></div>
+      </div>
+
+      <div class="chart-card full-width">
         <h3 class="chart-title">Respondent Breakdown</h3>
         <div style="overflow-x: auto;">
           <table class="data-table">
@@ -485,7 +511,20 @@
       researchChannel: 44,
       contentType: 45,
       recentAwareness: 46,
-      whereHeard: 47
+      whereHeard: 47,
+      // New fields
+      participationRating: 29,
+      roiRating: 30,
+      breadthRating: 31,
+      adminRating: 32,
+      alignmentRating: 33,
+      rankBreadth: 36,
+      rankROI: 37,
+      rankCost: 38,
+      rankEase: 39,
+      rankNoCost: 40,
+      rankSpeed: 41,
+      rankFrontline: 42
     };
 
     // Parse CSV
@@ -875,8 +914,130 @@
       // Triggers
       createVerticalBarChart('triggerChart', countValues(COLS.evalTrigger));
 
+      // Decision leaders
+      createPieChart('decisionChart', countValues(COLS.decisionLeader));
+
+      // Timeline
+      createPieChart('timelineChart', countValues(COLS.evalTimeline));
+
+      // Factor rankings
+      createRankingChart();
+
+      // Satisfaction ratings
+      createSatisfactionChart();
+
       // Table
       updateTable();
+    }
+
+    // Create ranking chart (average ranks, lower = more important)
+    function createRankingChart() {
+      const container = document.getElementById('rankingChart');
+      container.innerHTML = '';
+
+      const factors = {
+        'Proven ROI / retention impact': COLS.rankROI,
+        'No out-of-pocket cost for employees': COLS.rankNoCost,
+        'Support for frontline/hourly workers': COLS.rankFrontline,
+        'Cost to employer': COLS.rankCost,
+        'Ease of use for employees': COLS.rankEase,
+        'Breadth of university/degree options': COLS.rankBreadth,
+        'Speed of implementation': COLS.rankSpeed
+      };
+
+      const avgRanks = [];
+      for (const [label, colIndex] of Object.entries(factors)) {
+        let sum = 0;
+        let count = 0;
+        filteredData.forEach(row => {
+          const val = parseInt(row[colIndex]);
+          if (!isNaN(val)) {
+            sum += val;
+            count++;
+          }
+        });
+        if (count > 0) {
+          avgRanks.push({ label, avg: sum / count });
+        }
+      }
+
+      // Sort by average rank (lower is better/more important)
+      avgRanks.sort((a, b) => a.avg - b.avg);
+
+      avgRanks.forEach(({ label, avg }) => {
+        const row = document.createElement('div');
+        row.className = 'bar-row';
+        // Width based on inverse of rank (rank 1 = 100%, rank 7 = ~14%)
+        const width = ((8 - avg) / 7) * 100;
+
+        row.innerHTML = `
+          <div class="bar-label" style="width: 280px;">${label}</div>
+          <div class="bar-container">
+            <div class="bar-fill" style="width: ${width}%; background: #3B82F6;"></div>
+            <span class="bar-value">#${avg.toFixed(1)}</span>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    // Create satisfaction chart
+    function createSatisfactionChart() {
+      const container = document.getElementById('satisfactionChart');
+      container.innerHTML = '';
+
+      const questions = {
+        'Education benefits aligned with business needs': COLS.alignmentRating,
+        'Administrative burden is manageable': COLS.adminRating,
+        'Wide breadth of degree options': COLS.breadthRating,
+        'Easy to measure ROI': COLS.roiRating,
+        'Employee participation is high': COLS.participationRating
+      };
+
+      const satisfactionData = [];
+      for (const [label, colIndex] of Object.entries(questions)) {
+        let agreeCount = 0;
+        let totalWithProgram = 0;
+
+        filteredData.forEach(row => {
+          const rating = row[colIndex];
+          if (rating && rating !== '') {
+            totalWithProgram++;
+            if (rating === 'Strongly agree' || rating === 'Agree') {
+              agreeCount++;
+            }
+          }
+        });
+
+        if (totalWithProgram > 0) {
+          satisfactionData.push({
+            label,
+            pct: (agreeCount / totalWithProgram) * 100,
+            count: agreeCount,
+            total: totalWithProgram
+          });
+        }
+      }
+
+      // Sort by percentage
+      satisfactionData.sort((a, b) => b.pct - a.pct);
+
+      satisfactionData.forEach(({ label, pct, count, total }) => {
+        const row = document.createElement('div');
+        row.className = 'bar-row';
+
+        // Color based on satisfaction level
+        const color = pct >= 70 ? '#10B981' : pct >= 50 ? '#F59E0B' : '#EF4444';
+
+        row.innerHTML = `
+          <div class="bar-label" style="width: 280px;">${label}</div>
+          <div class="bar-container">
+            <div class="bar-fill" style="width: ${pct}%; background: ${color};"></div>
+            <span class="bar-value">${pct.toFixed(0)}% (${count}/${total})</span>
+          </div>
+        `;
+        container.appendChild(row);
+      });
     }
 
     // Load JSON data file
@@ -910,6 +1071,21 @@
           row[COLS.contentType] = r.contentType;
           row[COLS.recentAwareness] = r.recentAwareness;
           row[COLS.whereHeard] = r.whereHeard;
+          // New fields
+          row[COLS.decisionLeader] = r.decisionLeader;
+          row[COLS.evalTimeline] = r.evalTimeline;
+          row[COLS.participationRating] = r.participationRating;
+          row[COLS.roiRating] = r.roiRating;
+          row[COLS.breadthRating] = r.breadthRating;
+          row[COLS.adminRating] = r.adminRating;
+          row[COLS.alignmentRating] = r.alignmentRating;
+          row[COLS.rankBreadth] = r.rankBreadth;
+          row[COLS.rankROI] = r.rankROI;
+          row[COLS.rankCost] = r.rankCost;
+          row[COLS.rankEase] = r.rankEase;
+          row[COLS.rankNoCost] = r.rankNoCost;
+          row[COLS.rankSpeed] = r.rankSpeed;
+          row[COLS.rankFrontline] = r.rankFrontline;
           return row;
         });
 
