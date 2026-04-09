@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InStride HR Homepage Messaging Test - April 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            background: #f5f5f5;
+            color: #1a1a1a;
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            border: 2px solid #1a1a1a;
+            border-radius: 16px;
+            padding: 48px;
+            margin-bottom: 40px;
+            box-shadow: 6px 6px 0px 0px #1a1a1a;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #6b6b6b;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 24px;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: #1a1a1a;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+        }
+
+        .subtitle {
+            font-size: 20px;
+            color: #6b6b6b;
+            margin-bottom: 24px;
+        }
+
+        .meta {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #f5f5f5;
+            border: 2px solid #1a1a1a;
+            border-radius: 9999px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .badge.highlight {
+            background: #DFFE68;
+        }
+
+        h2 {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 24px;
+            margin-top: 48px;
+        }
+
+        h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            margin-top: 32px;
+        }
+
+        .section {
+            background: white;
+            border: 2px solid #1a1a1a;
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 4px 4px 0px 0px #1a1a1a;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin: 24px 0;
+        }
+
+        .card {
+            background: white;
+            border: 2px solid #1a1a1a;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 4px 4px 0px 0px #1a1a1a;
+        }
+
+        .score-card {
+            text-align: center;
+            padding: 32px 24px;
+        }
+
+        .score {
+            font-size: 64px;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .score.good {
+            color: #10B981;
+        }
+
+        .score.warning {
+            color: #F59E0B;
+        }
+
+        .score.poor {
+            color: #EF4444;
+        }
+
+        .score-label {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #6b6b6b;
+        }
+
+        .insight {
+            background: #f5f5f5;
+            border-left: 4px solid #1a1a1a;
+            padding: 16px 20px;
+            margin: 16px 0;
+        }
+
+        .insight.critical {
+            border-left-color: #EF4444;
+            background: #FEF2F2;
+        }
+
+        .insight.warning {
+            border-left-color: #F59E0B;
+            background: #FFFBEB;
+        }
+
+        .insight.positive {
+            border-left-color: #10B981;
+            background: #F0FDF4;
+        }
+
+        .quote {
+            font-style: italic;
+            color: #4a4a4a;
+            padding: 16px 24px;
+            border-left: 3px solid #DFFE68;
+            margin: 16px 0;
+            background: #f5f5f5;
+        }
+
+        .quote-author {
+            font-style: normal;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-top: 8px;
+            font-size: 14px;
+        }
+
+        ul, ol {
+            margin-left: 24px;
+            margin-top: 12px;
+            margin-bottom: 12px;
+        }
+
+        li {
+            margin: 8px 0;
+            color: #4a4a4a;
+        }
+
+        strong {
+            color: #1a1a1a;
+            font-weight: 700;
+        }
+
+        .cta-section {
+            background: #DFFE68;
+            border: 2px solid #1a1a1a;
+            border-radius: 16px;
+            padding: 48px;
+            margin-top: 48px;
+            box-shadow: 6px 6px 0px 0px #1a1a1a;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            margin-top: 0;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 16px 32px;
+            background: #1a1a1a;
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 8px;
+            margin-top: 16px;
+            transition: all 0.2s;
+        }
+
+        .cta-btn:hover {
+            background: #333;
+            transform: translateY(-2px);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 24px 0;
+        }
+
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 2px solid #f5f5f5;
+        }
+
+        th {
+            background: #1a1a1a;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        th:first-child {
+            border-top-left-radius: 8px;
+        }
+
+        th:last-child {
+            border-top-right-radius: 8px;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        .accordion-item {
+            background: white;
+            border: 2px solid #1a1a1a;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            overflow: hidden;
+            box-shadow: 4px 4px 0px 0px #1a1a1a;
+            transition: all 0.2s;
+        }
+
+        .accordion-item:hover {
+            box-shadow: 5px 5px 0px 0px #1a1a1a;
+        }
+
+        .accordion-header {
+            padding: 20px 24px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        .accordion-header:hover {
+            background: #f5f5f5;
+        }
+
+        .accordion-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1a1a;
+            flex: 1;
+        }
+
+        .accordion-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #f5f5f5;
+            border: 2px solid #1a1a1a;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-right: 12px;
+        }
+
+        .accordion-icon {
+            font-size: 24px;
+            font-weight: 700;
+            transition: transform 0.3s;
+            color: #1a1a1a;
+        }
+
+        .accordion-item.active .accordion-icon {
+            transform: rotate(45deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .accordion-content-inner {
+            padding: 0 24px 24px 24px;
+        }
+
+        .fix-box {
+            background: #DFFE68;
+            border-left: 4px solid #1a1a1a;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .fix-box h4 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+
+        .distribution-bar {
+            display: flex;
+            height: 32px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid #1a1a1a;
+            margin: 16px 0;
+        }
+
+        .distribution-segment {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .segment-poor { background: #EF4444; }
+        .segment-warning { background: #F59E0B; }
+        .segment-good { background: #10B981; }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 32px; }
+            header { padding: 32px 24px; }
+            .section { padding: 24px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="../" class="back-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Back to Dashboard
+            </a>
+            <h1>InStride HR Homepage Messaging Test</h1>
+            <p class="subtitle">Wynter Panel Feedback Analysis - April 2026</p>
+            <div class="meta">
+                <span class="badge highlight">15 Responses</span>
+                <span class="badge">Enterprise L&D Professionals</span>
+                <span class="badge">1,000+ Employee Companies</span>
+            </div>
+        </header>
+
+        <div class="section">
+            <h2 style="margin-top: 0;">Executive Summary</h2>
+            <p style="font-size: 18px; margin-bottom: 20px;">The InStride homepage messaging test reveals <strong>moderate reception with significant clarity gaps</strong>. While the L&D focus resonates with the target audience, respondents struggled to understand what InStride actually offers and how it differs from existing solutions like LinkedIn Learning or direct university partnerships.</p>
+
+            <div class="grid">
+                <div class="card score-card">
+                    <div class="score warning">3.7</div>
+                    <div class="score-label">Avg Clarity Score</div>
+                    <p style="margin-top: 12px; font-size: 14px; color: #6b6b6b;">Out of 5.0</p>
+                </div>
+                <div class="card score-card">
+                    <div class="score warning">3.3</div>
+                    <div class="score-label">Interest Level</div>
+                    <p style="margin-top: 12px; font-size: 14px; color: #6b6b6b;">Out of 5.0</p>
+                </div>
+                <div class="card score-card">
+                    <div class="score warning">3.5</div>
+                    <div class="score-label">Continue Reading</div>
+                    <p style="margin-top: 12px; font-size: 14px; color: #6b6b6b;">Out of 5.0</p>
+                </div>
+            </div>
+
+            <h3>Score Distribution</h3>
+            <p style="margin-bottom: 8px; font-weight: 600;">Overall Clarity Ratings (1-5)</p>
+            <div class="distribution-bar">
+                <div class="distribution-segment segment-warning" style="width: 27%;">3 (27%)</div>
+                <div class="distribution-segment segment-good" style="width: 40%; background: #34D399;">4 (40%)</div>
+                <div class="distribution-segment segment-good" style="width: 33%;">5 (33%)</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 style="margin-top: 0;">Critical Issues Identified</h2>
+
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span class="accordion-title">#1: Product Clarity Problem - "What Exactly Is This?"</span>
+                    <span class="accordion-badge" style="background: #FEF2F2; border-color: #EF4444; color: #EF4444;">HIGH</span>
+                    <span class="accordion-icon">+</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <p><strong>Problem:</strong> 10 out of 15 respondents couldn't clearly articulate what InStride offers after reading the page.</p>
+
+                        <div class="quote">
+                            "I don't understand exactly what this is. Is it an Internet site? Is this an AI tool? Is this integrated across all my different tools? It's just a little bit unclear on exactly what this is."
+                            <div class="quote-author">— Grant, L&D Manager, Food & Beverages</div>
+                        </div>
+
+                        <div class="quote">
+                            "It's not totally clear what the product is. Is it a tool like LinkedIn? Is this an online service? How exactly can it be used?"
+                            <div class="quote-author">— Amy, Director Global L&D, Pharmaceuticals</div>
+                        </div>
+
+                        <div class="quote">
+                            "What is this platform? What would be required of me? What's the time commitment, cost, and how my company would support?"
+                            <div class="quote-author">— Doyle, Senior Instructional Designer, Medical Device</div>
+                        </div>
+
+                        <div class="fix-box">
+                            <h4>Recommended Fix</h4>
+                            <p>Lead with a clear product definition: "InStride is a workforce education platform that connects your employees to accredited degree programs and professional certificates from top universities." Avoid vague terms like "strategic education solutions."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span class="accordion-title">#2: "Benefits" Terminology Creates Confusion</span>
+                    <span class="accordion-badge" style="background: #FEF2F2; border-color: #EF4444; color: #EF4444;">HIGH</span>
+                    <span class="accordion-icon">+</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <p><strong>Problem:</strong> The phrase "move beyond outdated benefits" makes readers think of healthcare/401k, not learning & development.</p>
+
+                        <div class="quote">
+                            "I was a little confused...I don't think of training as a 'benefit'. When I see benefit I think medical, 401k, etc, so as an L&D person I would have deleted it after seeing 'benefit' thinking it was for HR & not me."
+                            <div class="quote-author">— Patricia, Training Manager, Manufacturing</div>
+                        </div>
+
+                        <div class="quote">
+                            "'We help you move beyond outdated benefits...' makes me think your company is one I would work with if my employees needed a better benefits plan."
+                            <div class="quote-author">— Noah, L&D Manager, Manufacturing</div>
+                        </div>
+
+                        <div class="fix-box">
+                            <h4>Recommended Fix</h4>
+                            <p>Replace "benefits" with "professional development" or "workforce education programs." L&D professionals don't categorize training as a "benefit" - that's HR/benefits team territory.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span class="accordion-title">#3: "Skilling" Overload & Buzzword Fatigue</span>
+                    <span class="accordion-badge" style="background: #FFFBEB; border-color: #F59E0B; color: #F59E0B;">MEDIUM</span>
+                    <span class="accordion-icon">+</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <p><strong>Problem:</strong> Repetitive use of "skill/upskill/reskill/skilling" feels redundant and buzzwordy.</p>
+
+                        <div class="quote">
+                            "The word 'skill' is used three times in that sentence. That sentence is unclear and doesn't provide a clear vision for why I would continue reading."
+                            <div class="quote-author">— Noah, L&D Manager, Manufacturing</div>
+                        </div>
+
+                        <div class="quote">
+                            "The description contains a lot of buzz words - 'strategic', 'upskills/reskill', 'fuel mobility' etc. Just get to the point with what InStride is."
+                            <div class="quote-author">— Amy, Director Global L&D, Pharmaceuticals</div>
+                        </div>
+
+                        <div class="fix-box">
+                            <h4>Recommended Fix</h4>
+                            <p>Vary language: use "develop," "train," "educate," "grow" instead of repetitive "skill" variants. Be specific about outcomes rather than using generic workforce development terminology.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span class="accordion-title">#4: Enterprise Focus May Alienate Mid-Market</span>
+                    <span class="accordion-badge" style="background: #FFFBEB; border-color: #F59E0B; color: #F59E0B;">MEDIUM</span>
+                    <span class="accordion-icon">+</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <p><strong>Problem:</strong> Showcasing only major enterprise logos signals "not for you" to mid-size companies.</p>
+
+                        <div class="quote">
+                            "You appear to cater to major companies; that's how you're advertising it. You are showing the big names in several locations. What if I'm just a mid-size business?"
+                            <div class="quote-author">— Noah, L&D Manager, Manufacturing</div>
+                        </div>
+
+                        <div class="quote">
+                            "What if I'm a smaller business? If you have these major companies tied to these functions I might assume it's out of my reach or I can't afford it."
+                            <div class="quote-author">— Noah, L&D Manager, Manufacturing</div>
+                        </div>
+
+                        <div class="fix-box">
+                            <h4>Recommended Fix</h4>
+                            <p>Include mid-market success stories or add messaging like "From growing companies to Fortune 500" to broaden appeal. Consider adding company size filters or segments.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span class="accordion-title">#5: ASU Partnership - Mixed Reception</span>
+                    <span class="accordion-badge" style="background: #FFFBEB; border-color: #F59E0B; color: #F59E0B;">MEDIUM</span>
+                    <span class="accordion-icon">+</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <p><strong>Problem:</strong> ASU brand doesn't universally resonate, and the relationship is unclear.</p>
+
+                        <div class="quote">
+                            "I don't know if the ASU brand is as prestigious as they think it is. I've not taken their content myself, but my perception is cost-effective learning, not the highest quality content."
+                            <div class="quote-author">— Gonzalo, Director L&D, Food & Beverages</div>
+                        </div>
+
+                        <div class="quote">
+                            "ASU is not as world class as they think. Why not Harvard, Yale, or even University of Illinois?"
+                            <div class="quote-author">— Dani, Associate Director L&D, Pharmaceuticals</div>
+                        </div>
+
+                        <div class="quote">
+                            "2014 is a while ago. Is it really that important enough to mention this partnership?"
+                            <div class="quote-author">— Jarod, Sr Instructional Designer, Medical Device</div>
+                        </div>
+
+                        <div class="fix-box">
+                            <h4>Recommended Fix</h4>
+                            <p>Emphasize the breadth of university partners (not just ASU). Lead with "200+ programs from leading universities" rather than the ASU origin story. Consider removing the 2014 date.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span class="accordion-title">#6: Missing Concrete Outcomes & ROI</span>
+                    <span class="accordion-badge" style="background: #FFFBEB; border-color: #F59E0B; color: #F59E0B;">MEDIUM</span>
+                    <span class="accordion-icon">+</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <p><strong>Problem:</strong> No clear metrics, timelines, or ROI data to prove impact.</p>
+
+                        <div class="quote">
+                            "When training happens, how does it actually change behavior? Where is my investment in training going? Is it just another computer-based training?"
+                            <div class="quote-author">— Grant, L&D Manager, Food & Beverages</div>
+                        </div>
+
+                        <div class="quote">
+                            "Delivering measurable impact is one of the ultimate goals of L&D professionals. Promising you can do so with this platform is, to be honest, a bit untrustworthy without proof."
+                            <div class="quote-author">— Gonzalo, Director L&D, Food & Beverages</div>
+                        </div>
+
+                        <div class="quote">
+                            "What's still unclear is how this solution is different from other workforce development providers and what specific outcomes organizations achieve."
+                            <div class="quote-author">— Ricky, L&D Manager, Healthcare</div>
+                        </div>
+
+                        <div class="fix-box">
+                            <h4>Recommended Fix</h4>
+                            <p>Add specific metrics: "Companies using InStride see 40% higher retention among program participants" or "Average time to promotion: 18 months." Include case study data with real numbers.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 style="margin-top: 0;">What Resonated</h2>
+
+            <div class="insight positive">
+                <h3 style="margin-top: 0;">The L&D Focus Hits Home</h3>
+                <p>Respondents appreciated the focus on attract/retain/develop - core L&D concerns.</p>
+            </div>
+
+            <div class="quote">
+                "I love the idea of training to upskill users on different issues like retention, recruitment. More training and more knowledge is always a good thing."
+                <div class="quote-author">— Grant, L&D Manager, Food & Beverages</div>
+            </div>
+
+            <div class="quote">
+                "I really appreciate the organizations worked with. This signals they have built credibility in their learning space. I like the diversity of talent showcased."
+                <div class="quote-author">— Kris, Sr Manager L&D, SaaS/Software</div>
+            </div>
+
+            <div class="quote">
+                "The emphasis on flexibility, partnership, and the ability to adapt solutions over time resonated most."
+                <div class="quote-author">— Ricky, L&D Manager, Healthcare</div>
+            </div>
+
+            <div class="insight positive">
+                <h3 style="margin-top: 0;">Starbucks Example Creates Connection</h3>
+                <p>The Starbucks reference provided a tangible, relatable example of the model in action.</p>
+            </div>
+
+            <div class="quote">
+                "I like the use case (Starbucks) but would like to see more around that for clarity."
+                <div class="quote-author">— Amy, Director Global L&D, Pharmaceuticals</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 style="margin-top: 0;">Respondent Breakdown</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Title</th>
+                        <th>Industry</th>
+                        <th>Clarity</th>
+                        <th>Interest</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Patricia</td>
+                        <td>Director of L&D</td>
+                        <td>Healthcare</td>
+                        <td><strong>5</strong></td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td>Doyle</td>
+                        <td>Sr Instructional Designer</td>
+                        <td>Medical Device</td>
+                        <td>3</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <td>Grant</td>
+                        <td>L&D Manager</td>
+                        <td>Food & Beverages</td>
+                        <td>4</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>Amy</td>
+                        <td>Director Global L&D</td>
+                        <td>Pharmaceuticals</td>
+                        <td>3</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <td>Jamie</td>
+                        <td>L&D Manager</td>
+                        <td>Food & Beverages</td>
+                        <td>4</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <td>Kris</td>
+                        <td>Sr Manager L&D</td>
+                        <td>SaaS/Software</td>
+                        <td><strong>5</strong></td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td>Dani</td>
+                        <td>Associate Director L&D</td>
+                        <td>Pharmaceuticals</td>
+                        <td>4</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <td>Harper</td>
+                        <td>HR Coordinator</td>
+                        <td>Food & Beverages</td>
+                        <td>3</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>Jarod</td>
+                        <td>Sr Instructional Designer</td>
+                        <td>Medical Device</td>
+                        <td>3</td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td>Gonzalo</td>
+                        <td>Director L&D</td>
+                        <td>Food & Beverages</td>
+                        <td><strong>5</strong></td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td>Kirsten</td>
+                        <td>Sr Instructional Designer</td>
+                        <td>Healthcare</td>
+                        <td>3</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>Noah</td>
+                        <td>L&D Manager</td>
+                        <td>Manufacturing</td>
+                        <td>3</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <td>Patricia T.</td>
+                        <td>Training Manager</td>
+                        <td>Manufacturing</td>
+                        <td>3</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <td>Ricky</td>
+                        <td>L&D Manager</td>
+                        <td>Healthcare</td>
+                        <td>4</td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td>Marcia</td>
+                        <td>HR Business Partner</td>
+                        <td>Defense & Space</td>
+                        <td>4</td>
+                        <td>4</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2 style="margin-top: 0;">Key Recommendations</h2>
+
+            <div class="grid">
+                <div class="card">
+                    <h3 style="margin-top: 0;">1. Lead with Clarity</h3>
+                    <p>Replace "strategic education and skilling solutions" with a concrete product definition. Tell them what InStride IS in the first 10 words.</p>
+                </div>
+                <div class="card">
+                    <h3 style="margin-top: 0;">2. Drop "Benefits" Language</h3>
+                    <p>Reframe entirely for L&D audience. Use "workforce education" or "professional development programs" - not HR benefits terminology.</p>
+                </div>
+                <div class="card">
+                    <h3 style="margin-top: 0;">3. Add Proof Points</h3>
+                    <p>Include specific ROI metrics, completion rates, promotion timelines, and retention data from existing clients.</p>
+                </div>
+                <div class="card">
+                    <h3 style="margin-top: 0;">4. Diversify Social Proof</h3>
+                    <p>Show mid-market success stories alongside enterprise logos. Expand university partners beyond ASU focus.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2>Need Help Implementing These Changes?</h2>
+            <p style="font-size: 18px; margin-bottom: 16px; max-width: 600px; margin-left: auto; margin-right: auto;">42 Agency specializes in B2B SaaS messaging optimization and website conversion strategy.</p>
+            <a href="https://www.42agency.com/contact-us" class="cta-btn">Let's Talk</a>
+        </div>
+
+        <footer style="text-align: center; padding: 48px 0; color: #6b6b6b;">
+            <p>Prepared by <strong style="color: #1a1a1a;">42 Agency</strong> | April 2026</p>
+            <p style="margin-top: 8px;"><a href="https://app.wynter.io/test/69d6bc933097c0002acae330/screen" style="color: #6b6b6b;">View Original Wynter Test</a></p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleAccordion(header) {
+            const item = header.parentElement;
+            const content = item.querySelector('.accordion-content');
+            const isActive = item.classList.contains('active');
+
+            // Close all others
+            document.querySelectorAll('.accordion-item').forEach(i => {
+                i.classList.remove('active');
+                i.querySelector('.accordion-content').style.maxHeight = null;
+            });
+
+            // Open this one if it wasn't active
+            if (!isActive) {
+                item.classList.add('active');
+                content.style.maxHeight = content.scrollHeight + 'px';
+            }
+        }
+
+        // Open first accordion by default
+        document.addEventListener('DOMContentLoaded', () => {
+            const firstHeader = document.querySelector('.accordion-header');
+            if (firstHeader) toggleAccordion(firstHeader);
+        });
+    </script>
+</body>
+</html>

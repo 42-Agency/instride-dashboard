@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InStride Brand Awareness Survey Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      line-height: 1.5;
+    }
+
+    .header {
+      background: #fff;
+      border-bottom: 2px solid #1a1a1a;
+      padding: 20px 32px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header h1 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+    }
+
+    .header p {
+      color: #6b6b6b;
+      font-size: 0.875rem;
+      margin-top: 4px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .filters {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .filter-group label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #6b6b6b;
+    }
+
+    .filter-group select {
+      padding: 10px 14px;
+      border: 2px solid #1a1a1a;
+      border-radius: 8px;
+      background: #fff;
+      font-family: inherit;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      min-width: 180px;
+      box-shadow: 2px 2px 0px 0px #1a1a1a;
+    }
+
+    .filter-group select:focus {
+      outline: none;
+      box-shadow: 4px 4px 0px 0px #1a1a1a;
+    }
+
+    .reset-btn {
+      align-self: flex-end;
+      padding: 10px 20px;
+      background: #DFFE68;
+      border: 2px solid #1a1a1a;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.875rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 2px 2px 0px 0px #1a1a1a;
+      transition: all 0.15s;
+    }
+
+    .reset-btn:hover {
+      background: #C8E85C;
+      box-shadow: 4px 4px 0px 0px #1a1a1a;
+      transform: translate(-2px, -2px);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 1024px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .stat-card {
+      background: #fff;
+      border: 2px solid #1a1a1a;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 4px 4px 0px 0px #1a1a1a;
+    }
+
+    .stat-card.highlight {
+      background: #DFFE68;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #6b6b6b;
+      margin-bottom: 8px;
+    }
+
+    .stat-card.highlight .stat-label {
+      color: #4a4a4a;
+    }
+
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+    }
+
+    .stat-detail {
+      font-size: 0.875rem;
+      color: #6b6b6b;
+      margin-top: 4px;
+    }
+
+    .stat-card.highlight .stat-detail {
+      color: #4a4a4a;
+    }
+
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .chart-card {
+      background: #fff;
+      border: 2px solid #1a1a1a;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 4px 4px 0px 0px #1a1a1a;
+    }
+
+    .chart-card.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .chart-title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 300px;
+    }
+
+    .chart-container.tall {
+      height: 400px;
+    }
+
+    .bar-chart-horizontal {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .bar-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .bar-label {
+      width: 180px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .bar-container {
+      flex: 1;
+      height: 28px;
+      background: #f5f5f5;
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 6px;
+      transition: width 0.5s ease;
+    }
+
+    .bar-fill.guild { background: #3B82F6; }
+    .bar-fill.instride { background: #DFFE68; border: 1px solid #1a1a1a; }
+    .bar-fill.brighthorizons { background: #F59E0B; }
+    .bar-fill.workforceedge { background: #10B981; }
+    .bar-fill.coursera { background: #8B5CF6; }
+    .bar-fill.kaplan { background: #EC4899; }
+    .bar-fill.default { background: #6B7280; }
+
+    .bar-value {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+
+    .legend {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #e5e5e5;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .legend-color {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .data-table th {
+      text-align: left;
+      padding: 12px;
+      background: #f5f5f5;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 2px solid #1a1a1a;
+    }
+
+    .data-table td {
+      padding: 12px;
+      border-bottom: 1px solid #e5e5e5;
+      font-size: 0.875rem;
+    }
+
+    .data-table tr:hover {
+      background: #fafafa;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border: 2px solid currentColor;
+    }
+
+    .badge.yes { color: #10B981; background: rgba(16, 185, 129, 0.1); }
+    .badge.no { color: #EF4444; background: rgba(239, 68, 68, 0.1); }
+    .badge.notsure { color: #F59E0B; background: rgba(245, 158, 11, 0.1); }
+
+    .footer {
+      text-align: center;
+      padding: 32px;
+      color: #6b6b6b;
+      font-size: 0.875rem;
+    }
+
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 200px;
+      font-size: 1rem;
+      color: #6b6b6b;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>InStride Brand Awareness Survey</h1>
+    <p>Aided & Unaided Recall Study - March 2026 | <span id="responseCount">Loading...</span> responses</p>
+  </header>
+
+  <main class="container">
+    <div class="filters">
+      <div class="filter-group">
+        <label>Company Size</label>
+        <select id="filterSize">
+          <option value="">All Sizes</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Industry</label>
+        <select id="filterIndustry">
+          <option value="">All Industries</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Job Function</label>
+        <select id="filterFunction">
+          <option value="">All Functions</option>
+        </select>
+      </div>
+      <button class="reset-btn" onclick="resetFilters()">Reset Filters</button>
+    </div>
+
+    <section class="stats-grid">
+      <div class="stat-card highlight">
+        <div class="stat-label">InStride Unaided Recall</div>
+        <div class="stat-value" id="unaidedRecall">--%</div>
+        <div class="stat-detail">Top of mind mentions</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">InStride Aided Awareness</div>
+        <div class="stat-value" id="aidedRecall">--%</div>
+        <div class="stat-detail">When shown the list</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Recent InStride Exposure</div>
+        <div class="stat-value" id="recentExposure">--%</div>
+        <div class="stat-detail">Seen/heard in past 6 months</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Avg. Survey Duration</div>
+        <div class="stat-value" id="avgDuration">--</div>
+        <div class="stat-detail">minutes per response</div>
+      </div>
+    </section>
+
+    <section class="charts-grid">
+      <div class="chart-card">
+        <h3 class="chart-title">Unaided Recall - Top of Mind</h3>
+        <div id="unaidedChart" class="bar-chart-horizontal"></div>
+      </div>
+
+      <div class="chart-card">
+        <h3 class="chart-title">Aided Awareness by Provider</h3>
+        <div id="aidedChart" class="bar-chart-horizontal"></div>
+      </div>
+
+      <div class="chart-card">
+        <h3 class="chart-title">Where They Heard About InStride</h3>
+        <div class="chart-container">
+          <canvas id="sourceChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <h3 class="chart-title">Research Channels</h3>
+        <div class="chart-container">
+          <canvas id="channelChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <h3 class="chart-title">Current Education Benefits Status</h3>
+        <div class="chart-container">
+          <canvas id="programChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <h3 class="chart-title">Evaluation Triggers</h3>
+        <div class="chart-container">
+          <canvas id="triggerChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card full-width">
+        <h3 class="chart-title">Factor Importance When Evaluating Partners</h3>
+        <p style="color: #6b6b6b; font-size: 0.875rem; margin-bottom: 16px;">Average ranking (1 = most important)</p>
+        <div id="rankingChart" class="bar-chart-horizontal"></div>
+      </div>
+
+      <div class="chart-card">
+        <h3 class="chart-title">Who Leads Vendor Selection?</h3>
+        <div class="chart-container">
+          <canvas id="decisionChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <h3 class="chart-title">Evaluation Timeline</h3>
+        <div class="chart-container">
+          <canvas id="timelineChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card full-width">
+        <h3 class="chart-title">Current Program Satisfaction</h3>
+        <p style="color: #6b6b6b; font-size: 0.875rem; margin-bottom: 16px;">% who agree or strongly agree</p>
+        <div id="satisfactionChart" class="bar-chart-horizontal"></div>
+      </div>
+
+      <div class="chart-card full-width">
+        <h3 class="chart-title">Respondent Breakdown</h3>
+        <div style="overflow-x: auto;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Company Size</th>
+                <th>Industry</th>
+                <th>Job Function</th>
+                <th>Title</th>
+                <th>Current Program</th>
+                <th>Heard of InStride?</th>
+                <th>Recent Exposure?</th>
+              </tr>
+            </thead>
+            <tbody id="dataTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>InStride Brand Awareness Survey Dashboard | Built for 42 Agency</p>
+  </footer>
+
+  <script>
+    // CSV Data embedded (will be populated)
+    let rawData = [];
+    let filteredData = [];
+
+    // Column indices based on CSV structure
+    const COLS = {
+      duration: 8,
+      companySize: 13,
+      jobFunction: 14,
+      jobTitle: 15,
+      industry: 16,
+      unaidedText: 17,
+      unaidedSelect: 18,
+      aidedGuild: 19,
+      aidedBrightHorizons: 20,
+      aidedWorkforceEdge: 21,
+      aidedKaplan: 22,
+      aidedCoursera: 23,
+      aidedInStride: 24,
+      aidedHoughton: 25,
+      aided2U: 26,
+      aidedNone: 27,
+      programStatus: 28,
+      decisionLeader: 34,
+      evalTimeline: 35,
+      evalTrigger: 43,
+      researchChannel: 44,
+      contentType: 45,
+      recentAwareness: 46,
+      whereHeard: 47,
+      // New fields
+      participationRating: 29,
+      roiRating: 30,
+      breadthRating: 31,
+      adminRating: 32,
+      alignmentRating: 33,
+      rankBreadth: 36,
+      rankROI: 37,
+      rankCost: 38,
+      rankEase: 39,
+      rankNoCost: 40,
+      rankSpeed: 41,
+      rankFrontline: 42
+    };
+
+    // Parse CSV
+    function parseCSV(text) {
+      const lines = text.split('\n');
+      const data = [];
+
+      // Skip header rows (first 3 lines)
+      for (let i = 3; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) continue;
+
+        // Parse CSV with proper quote handling
+        const row = parseCSVLine(line);
+        if (row.length > 10) {
+          data.push(row);
+        }
+      }
+      return data;
+    }
+
+    function parseCSVLine(line) {
+      const result = [];
+      let current = '';
+      let inQuotes = false;
+
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+
+        if (char === '"') {
+          if (inQuotes && line[i + 1] === '"') {
+            current += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (char === ',' && !inQuotes) {
+          result.push(current.trim());
+          current = '';
+        } else {
+          current += char;
+        }
+      }
+      result.push(current.trim());
+      return result;
+    }
+
+    // Get unique values for filters
+    function getUniqueValues(data, colIndex) {
+      const values = new Set();
+      data.forEach(row => {
+        if (row[colIndex]) values.add(row[colIndex]);
+      });
+      return Array.from(values).sort();
+    }
+
+    // Populate filter dropdowns
+    function populateFilters() {
+      const sizeSelect = document.getElementById('filterSize');
+      const industrySelect = document.getElementById('filterIndustry');
+      const functionSelect = document.getElementById('filterFunction');
+
+      getUniqueValues(rawData, COLS.companySize).forEach(val => {
+        sizeSelect.add(new Option(val, val));
+      });
+
+      getUniqueValues(rawData, COLS.industry).forEach(val => {
+        industrySelect.add(new Option(val, val));
+      });
+
+      getUniqueValues(rawData, COLS.jobFunction).forEach(val => {
+        functionSelect.add(new Option(val, val));
+      });
+    }
+
+    // Apply filters
+    function applyFilters() {
+      const sizeFilter = document.getElementById('filterSize').value;
+      const industryFilter = document.getElementById('filterIndustry').value;
+      const functionFilter = document.getElementById('filterFunction').value;
+
+      filteredData = rawData.filter(row => {
+        if (sizeFilter && row[COLS.companySize] !== sizeFilter) return false;
+        if (industryFilter && row[COLS.industry] !== industryFilter) return false;
+        if (functionFilter && row[COLS.jobFunction] !== functionFilter) return false;
+        return true;
+      });
+
+      updateDashboard();
+    }
+
+    function resetFilters() {
+      document.getElementById('filterSize').value = '';
+      document.getElementById('filterIndustry').value = '';
+      document.getElementById('filterFunction').value = '';
+      filteredData = [...rawData];
+      updateDashboard();
+    }
+
+    // Calculate metrics
+    function calculateMetrics() {
+      const total = filteredData.length;
+      if (total === 0) return { unaided: 0, aided: 0, recent: 0, avgDuration: 0 };
+
+      // Unaided - InStride mentioned in free text or selected
+      const unaidedCount = filteredData.filter(row => {
+        const text = (row[COLS.unaidedText] || '').toLowerCase();
+        const select = (row[COLS.unaidedSelect] || '').toLowerCase();
+        return text.includes('instride') || text.includes('in stride') ||
+               select.includes('instride');
+      }).length;
+
+      // Aided - InStride checked in multi-select
+      const aidedCount = filteredData.filter(row => {
+        return row[COLS.aidedInStride] && row[COLS.aidedInStride].toLowerCase().includes('instride');
+      }).length;
+
+      // Recent exposure
+      const recentCount = filteredData.filter(row => {
+        return row[COLS.recentAwareness] === 'Yes';
+      }).length;
+
+      // Avg duration
+      const totalDuration = filteredData.reduce((sum, row) => {
+        return sum + (parseInt(row[COLS.duration]) || 0);
+      }, 0);
+
+      return {
+        unaided: ((unaidedCount / total) * 100).toFixed(1),
+        aided: ((aidedCount / total) * 100).toFixed(1),
+        recent: ((recentCount / total) * 100).toFixed(1),
+        avgDuration: (totalDuration / total / 60).toFixed(1)
+      };
+    }
+
+    // Count brand mentions
+    function countBrandMentions() {
+      const brands = {
+        'Guild Education': 0,
+        'Bright Horizons': 0,
+        'Workforce Edge': 0,
+        'Coursera': 0,
+        'Kaplan': 0,
+        'InStride': 0,
+        '2U / edX': 0,
+        'Other': 0
+      };
+
+      filteredData.forEach(row => {
+        const text = (row[COLS.unaidedText] || '').toLowerCase();
+        const select = (row[COLS.unaidedSelect] || '').toLowerCase();
+        const combined = text + ' ' + select;
+
+        if (combined.includes('guild')) brands['Guild Education']++;
+        else if (combined.includes('bright') || combined.includes('edassist')) brands['Bright Horizons']++;
+        else if (combined.includes('workforce') || combined.includes('walmart')) brands['Workforce Edge']++;
+        else if (combined.includes('coursera')) brands['Coursera']++;
+        else if (combined.includes('kaplan')) brands['Kaplan']++;
+        else if (combined.includes('instride') || combined.includes('in stride')) brands['InStride']++;
+        else if (combined.includes('2u') || combined.includes('edx')) brands['2U / edX']++;
+        else if (combined.trim() && !combined.includes('none') && !combined.includes('cant think')) brands['Other']++;
+      });
+
+      return brands;
+    }
+
+    // Count aided awareness
+    function countAidedAwareness() {
+      const brands = {
+        'Guild Education': 0,
+        'Bright Horizons': 0,
+        'Workforce Edge': 0,
+        'Coursera': 0,
+        'Kaplan': 0,
+        'InStride': 0,
+        '2U / edX': 0,
+        'Houghton Mifflin': 0
+      };
+
+      filteredData.forEach(row => {
+        if (row[COLS.aidedGuild]) brands['Guild Education']++;
+        if (row[COLS.aidedBrightHorizons]) brands['Bright Horizons']++;
+        if (row[COLS.aidedWorkforceEdge]) brands['Workforce Edge']++;
+        if (row[COLS.aidedCoursera]) brands['Coursera']++;
+        if (row[COLS.aidedKaplan]) brands['Kaplan']++;
+        if (row[COLS.aidedInStride]) brands['InStride']++;
+        if (row[COLS.aided2U]) brands['2U / edX']++;
+        if (row[COLS.aidedHoughton]) brands['Houghton Mifflin']++;
+      });
+
+      return brands;
+    }
+
+    // Create horizontal bar chart
+    function createBarChart(containerId, data, maxVal) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+
+      const sorted = Object.entries(data).sort((a, b) => b[1] - a[1]);
+      const total = filteredData.length;
+
+      sorted.forEach(([label, value]) => {
+        const pct = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+        const width = total > 0 ? (value / total) * 100 : 0;
+
+        const row = document.createElement('div');
+        row.className = 'bar-row';
+
+        const brandClass = label.toLowerCase()
+          .replace(/\s+/g, '')
+          .replace(/[^a-z]/g, '')
+          .substring(0, 15);
+
+        row.innerHTML = `
+          <div class="bar-label">${label}</div>
+          <div class="bar-container">
+            <div class="bar-fill ${brandClass === 'instride' ? 'instride' :
+                                   brandClass === 'guildeducation' ? 'guild' :
+                                   brandClass === 'brighthorizons' ? 'brighthorizons' :
+                                   brandClass === 'workforceedge' ? 'workforceedge' :
+                                   brandClass === 'coursera' ? 'coursera' :
+                                   brandClass === 'kaplan' ? 'kaplan' : 'default'}"
+                 style="width: ${width}%"></div>
+            <span class="bar-value">${value} (${pct}%)</span>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    // Count values in a column
+    function countValues(colIndex) {
+      const counts = {};
+      filteredData.forEach(row => {
+        const val = row[colIndex];
+        if (val) {
+          counts[val] = (counts[val] || 0) + 1;
+        }
+      });
+      return counts;
+    }
+
+    // Chart instances
+    let charts = {};
+
+    // Create pie/doughnut chart
+    function createPieChart(canvasId, data, title) {
+      const ctx = document.getElementById(canvasId);
+
+      if (charts[canvasId]) {
+        charts[canvasId].destroy();
+      }
+
+      const sorted = Object.entries(data).sort((a, b) => b[1] - a[1]);
+      const labels = sorted.map(([k]) => k);
+      const values = sorted.map(([, v]) => v);
+
+      const colors = [
+        '#3B82F6', '#DFFE68', '#F59E0B', '#10B981',
+        '#8B5CF6', '#EC4899', '#6B7280', '#EF4444',
+        '#14B8A6', '#F97316'
+      ];
+
+      charts[canvasId] = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: values,
+            backgroundColor: colors.slice(0, labels.length),
+            borderColor: '#1a1a1a',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: {
+                font: { family: 'Inter', size: 11 },
+                padding: 12
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Create bar chart
+    function createVerticalBarChart(canvasId, data) {
+      const ctx = document.getElementById(canvasId);
+
+      if (charts[canvasId]) {
+        charts[canvasId].destroy();
+      }
+
+      const sorted = Object.entries(data).sort((a, b) => b[1] - a[1]).slice(0, 8);
+      const labels = sorted.map(([k]) => k.length > 25 ? k.substring(0, 22) + '...' : k);
+      const values = sorted.map(([, v]) => v);
+
+      charts[canvasId] = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: values,
+            backgroundColor: '#DFFE68',
+            borderColor: '#1a1a1a',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          indexAxis: 'y',
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { font: { family: 'Inter', size: 11 } }
+            },
+            y: {
+              grid: { display: false },
+              ticks: { font: { family: 'Inter', size: 10 } }
+            }
+          }
+        }
+      });
+    }
+
+    // Update data table
+    function updateTable() {
+      const tbody = document.getElementById('dataTable');
+      tbody.innerHTML = '';
+
+      filteredData.slice(0, 50).forEach(row => {
+        const heardInstride = row[COLS.aidedInStride] ? 'Yes' : 'No';
+        const recentExposure = row[COLS.recentAwareness];
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${row[COLS.companySize] || '-'}</td>
+          <td>${row[COLS.industry] || '-'}</td>
+          <td>${row[COLS.jobFunction] || '-'}</td>
+          <td>${row[COLS.jobTitle] || '-'}</td>
+          <td>${row[COLS.programStatus] || '-'}</td>
+          <td><span class="badge ${heardInstride === 'Yes' ? 'yes' : 'no'}">${heardInstride}</span></td>
+          <td><span class="badge ${recentExposure === 'Yes' ? 'yes' : recentExposure === 'No' ? 'no' : 'notsure'}">${recentExposure || '-'}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Main update function
+    function updateDashboard() {
+      document.getElementById('responseCount').textContent = filteredData.length;
+
+      const metrics = calculateMetrics();
+      document.getElementById('unaidedRecall').textContent = metrics.unaided + '%';
+      document.getElementById('aidedRecall').textContent = metrics.aided + '%';
+      document.getElementById('recentExposure').textContent = metrics.recent + '%';
+      document.getElementById('avgDuration').textContent = metrics.avgDuration;
+
+      // Brand charts
+      createBarChart('unaidedChart', countBrandMentions());
+      createBarChart('aidedChart', countAidedAwareness());
+
+      // Where heard
+      const whereHeard = {};
+      filteredData.forEach(row => {
+        if (row[COLS.whereHeard] && row[COLS.recentAwareness] === 'Yes') {
+          whereHeard[row[COLS.whereHeard]] = (whereHeard[row[COLS.whereHeard]] || 0) + 1;
+        }
+      });
+      createPieChart('sourceChart', whereHeard);
+
+      // Research channels
+      createPieChart('channelChart', countValues(COLS.researchChannel));
+
+      // Program status
+      createPieChart('programChart', countValues(COLS.programStatus));
+
+      // Triggers
+      createVerticalBarChart('triggerChart', countValues(COLS.evalTrigger));
+
+      // Decision leaders
+      createPieChart('decisionChart', countValues(COLS.decisionLeader));
+
+      // Timeline
+      createPieChart('timelineChart', countValues(COLS.evalTimeline));
+
+      // Factor rankings
+      createRankingChart();
+
+      // Satisfaction ratings
+      createSatisfactionChart();
+
+      // Table
+      updateTable();
+    }
+
+    // Create ranking chart (average ranks, lower = more important)
+    function createRankingChart() {
+      const container = document.getElementById('rankingChart');
+      container.innerHTML = '';
+
+      const factors = {
+        'Proven ROI / retention impact': COLS.rankROI,
+        'No out-of-pocket cost for employees': COLS.rankNoCost,
+        'Support for frontline/hourly workers': COLS.rankFrontline,
+        'Cost to employer': COLS.rankCost,
+        'Ease of use for employees': COLS.rankEase,
+        'Breadth of university/degree options': COLS.rankBreadth,
+        'Speed of implementation': COLS.rankSpeed
+      };
+
+      const avgRanks = [];
+      for (const [label, colIndex] of Object.entries(factors)) {
+        let sum = 0;
+        let count = 0;
+        filteredData.forEach(row => {
+          const val = parseInt(row[colIndex]);
+          if (!isNaN(val)) {
+            sum += val;
+            count++;
+          }
+        });
+        if (count > 0) {
+          avgRanks.push({ label, avg: sum / count });
+        }
+      }
+
+      // Sort by average rank (lower is better/more important)
+      avgRanks.sort((a, b) => a.avg - b.avg);
+
+      avgRanks.forEach(({ label, avg }) => {
+        const row = document.createElement('div');
+        row.className = 'bar-row';
+        // Width based on inverse of rank (rank 1 = 100%, rank 7 = ~14%)
+        const width = ((8 - avg) / 7) * 100;
+
+        row.innerHTML = `
+          <div class="bar-label" style="width: 280px;">${label}</div>
+          <div class="bar-container">
+            <div class="bar-fill" style="width: ${width}%; background: #3B82F6;"></div>
+            <span class="bar-value">#${avg.toFixed(1)}</span>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    // Create satisfaction chart
+    function createSatisfactionChart() {
+      const container = document.getElementById('satisfactionChart');
+      container.innerHTML = '';
+
+      const questions = {
+        'Education benefits aligned with business needs': COLS.alignmentRating,
+        'Administrative burden is manageable': COLS.adminRating,
+        'Wide breadth of degree options': COLS.breadthRating,
+        'Easy to measure ROI': COLS.roiRating,
+        'Employee participation is high': COLS.participationRating
+      };
+
+      const satisfactionData = [];
+      for (const [label, colIndex] of Object.entries(questions)) {
+        let agreeCount = 0;
+        let totalWithProgram = 0;
+
+        filteredData.forEach(row => {
+          const rating = row[colIndex];
+          if (rating && rating !== '') {
+            totalWithProgram++;
+            if (rating === 'Strongly agree' || rating === 'Agree') {
+              agreeCount++;
+            }
+          }
+        });
+
+        if (totalWithProgram > 0) {
+          satisfactionData.push({
+            label,
+            pct: (agreeCount / totalWithProgram) * 100,
+            count: agreeCount,
+            total: totalWithProgram
+          });
+        }
+      }
+
+      // Sort by percentage
+      satisfactionData.sort((a, b) => b.pct - a.pct);
+
+      satisfactionData.forEach(({ label, pct, count, total }) => {
+        const row = document.createElement('div');
+        row.className = 'bar-row';
+
+        // Color based on satisfaction level
+        const color = pct >= 70 ? '#10B981' : pct >= 50 ? '#F59E0B' : '#EF4444';
+
+        row.innerHTML = `
+          <div class="bar-label" style="width: 280px;">${label}</div>
+          <div class="bar-container">
+            <div class="bar-fill" style="width: ${pct}%; background: ${color};"></div>
+            <span class="bar-value">${pct.toFixed(0)}% (${count}/${total})</span>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    // Load JSON data file
+    async function loadData() {
+      try {
+        const response = await fetch('instride-data.json');
+        const data = await response.json();
+
+        // Convert JSON to array format matching our COLS structure
+        rawData = data.map(r => {
+          const row = new Array(50).fill('');
+          row[COLS.duration] = r.duration;
+          row[COLS.companySize] = r.size;
+          row[COLS.jobFunction] = r.function;
+          row[COLS.jobTitle] = r.title;
+          row[COLS.industry] = r.industry;
+          row[COLS.unaidedText] = r.unaidedText;
+          row[COLS.unaidedSelect] = r.unaidedSelect;
+          row[COLS.aidedGuild] = r.aidedGuild;
+          row[COLS.aidedBrightHorizons] = r.aidedBrightHorizons;
+          row[COLS.aidedWorkforceEdge] = r.aidedWorkforceEdge;
+          row[COLS.aidedKaplan] = r.aidedKaplan;
+          row[COLS.aidedCoursera] = r.aidedCoursera;
+          row[COLS.aidedInStride] = r.aidedInStride;
+          row[COLS.aidedHoughton] = r.aidedHoughton;
+          row[COLS.aided2U] = r.aided2U;
+          row[COLS.aidedNone] = r.aidedNone;
+          row[COLS.programStatus] = r.programStatus;
+          row[COLS.evalTrigger] = r.evalTrigger;
+          row[COLS.researchChannel] = r.researchChannel;
+          row[COLS.contentType] = r.contentType;
+          row[COLS.recentAwareness] = r.recentAwareness;
+          row[COLS.whereHeard] = r.whereHeard;
+          // New fields
+          row[COLS.decisionLeader] = r.decisionLeader;
+          row[COLS.evalTimeline] = r.evalTimeline;
+          row[COLS.participationRating] = r.participationRating;
+          row[COLS.roiRating] = r.roiRating;
+          row[COLS.breadthRating] = r.breadthRating;
+          row[COLS.adminRating] = r.adminRating;
+          row[COLS.alignmentRating] = r.alignmentRating;
+          row[COLS.rankBreadth] = r.rankBreadth;
+          row[COLS.rankROI] = r.rankROI;
+          row[COLS.rankCost] = r.rankCost;
+          row[COLS.rankEase] = r.rankEase;
+          row[COLS.rankNoCost] = r.rankNoCost;
+          row[COLS.rankSpeed] = r.rankSpeed;
+          row[COLS.rankFrontline] = r.rankFrontline;
+          return row;
+        });
+
+        filteredData = [...rawData];
+        populateFilters();
+        updateDashboard();
+
+        // Add filter listeners
+        document.getElementById('filterSize').addEventListener('change', applyFilters);
+        document.getElementById('filterIndustry').addEventListener('change', applyFilters);
+        document.getElementById('filterFunction').addEventListener('change', applyFilters);
+
+      } catch (error) {
+        console.error('Error loading data:', error);
+        document.getElementById('responseCount').textContent = 'Error loading data - please serve via local server';
+      }
+    }
+
+    // Initialize
+    loadData();
+  </script>
+</body>
+</html>
